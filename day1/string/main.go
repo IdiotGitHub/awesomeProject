@@ -13,9 +13,27 @@ import (
 	4.整数转字符串str := strconv.Itoa(num)
 	5.字符串转byte切片 []byte  var bytes = []byte(str)
 	6.[]byte转字符串 var str = string([]byte{97, 98, 99})
+	7.10进制数字转2、8、16进制数使用strconv.FormatInt(num, 2、8、16)
+	8.查找子串是否存在指定的字符串：strings.Contains(str1, substr)返回bool值
+	9.统计字符串中有几个指定字串，strings.Count("abcddd", "d")返回3
+	10.不区分大小写的字符串比较（==是区分字母大小写的）：strings.EqualFold(str1, str2)
+	11.返回子串在字符串中第一次出现的索引位置（从0开始看）如果子串不在字符串中返回-1
+	12.返回子串在字符串中最后一次次出现的索引位置（从0开始看）如果子串不在字符串中返回-1
+	13.将指定的子串替换成另一个子串：strings.Replace("go go go hello", "go", "golang", n),n可以指定你希望替换几个，-1表示全部替换，它是生成一个新的字符串，源字符串没有发生变化
+	14.按照指定的某个字符为分割标识，将一个字符串拆分成字符串数组：strings.Split("hello,world,ok", ",")
+	15.将字符串进行大小写转换strings.ToLower(str),strings.ToUpper(str)
+	16.将字符串左右两侧的空格去掉， string.TrimSpace(str)
+	17.将字符串左右两边指定的字符去掉，strings.Trim("! hello! ", " !")将左右两边都空格和！去掉
+	18.将字符串左边指定的字符去掉，strings.TrimLeft("! hello! ", " !")将左边都空格和！去掉
+	19.将字符串右边指定的字符去掉，strings.TrimRight("! hello! ", " !")将右边都空格和！去掉
+	20.判断字符串是以指定的字符串开头：strings.HasPrefix(str1,str2)返回bool
+	21.判断字符串是以指定的字符串结尾：strings.HasSuffix(str1,str2)返回bool
+
+
 */
 func main() {
-	lenDemo("hello北京")
+	//lenDemo("hello北京")
+	AtoiDemo("hello")
 }
 
 //len()demo
@@ -35,7 +53,13 @@ func runeDemo(str string) {
 }
 
 func AtoiDemo(str string) {
-	fmt.Println(strconv.Atoi(str))
+	num, err := strconv.Atoi(str)
+	//当转换出错时，num不会被赋予值，而是被初始化默认值
+	if err == nil {
+		fmt.Println(num)
+	} else {
+		fmt.Println(err)
+	}
 }
 
 func ItoaDemo(num int) {
@@ -45,4 +69,9 @@ func ItoaDemo(num int) {
 func byteSliceDemo(str string) {
 	var bytes = []byte(str)
 	fmt.Printf("bytes=%v\n", bytes)
+}
+
+//[]byte 转string
+func byteSliceToString(bytes []byte) {
+	fmt.Println(string(bytes))
 }
