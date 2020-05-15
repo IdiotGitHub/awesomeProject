@@ -94,19 +94,23 @@ func init() {
 	fmt.Println("init()")
 }
 func main() {
-/*	fmt.Println(2.2 == Float64(3.3-1.1))
-	fmt.Println(getSumAndSub(11, 21))
-	f := getSum
-	fmt.Printf("f的类型为%T, getSum的类型为%T\n", f, getSum)
-	fmt.Println(getSum2(1, 2, 3, 4, 5, 6))
-	num1 := 2
-	num2 := 3
-	exercise1(&num1, &num2)
-	fmt.Println("交换2和3的值", num1, num2)
-	unknownFuncDemo2()*/
+	/*	fmt.Println(2.2 == Float64(3.3-1.1))
+		fmt.Println(getSumAndSub(11, 21))
+		f := getSum
+		fmt.Printf("f的类型为%T, getSum的类型为%T\n", f, getSum)
+		fmt.Println(getSum2(1, 2, 3, 4, 5, 6))
+		num1 := 2
+		num2 := 3
+		exercise1(&num1, &num2)
+		fmt.Println("交换2和3的值", num1, num2)
+		unknownFuncDemo2()*/
 	f := biBao(".jpg")
 	fmt.Println(f("world.jpg"))
 	fmt.Println(f("world"))
+	//时间和日期
+	utils.Demo1()
+	utils.Demo2()
+	utils.Demo3()
 }
 func Float64(num float64) float64 {
 	float64Num, _ := strconv.ParseFloat(fmt.Sprintf("%.15f", num), 64)
@@ -172,7 +176,7 @@ func addUpper(num int) func(int) int {
 }
 
 //defer
-func deferDemo1() int{
+func deferDemo1() int {
 	//当执行到defer时会将defer后的语句压入一个独立的栈中
 	//当函数执行完毕后，再从defer栈中执行（后入先出顺序）
 	defer fmt.Println("deferDemo->defer1")
