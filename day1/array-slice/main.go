@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
+	"time"
 )
 
 /*
@@ -50,6 +52,7 @@ func main() {
 	fmt.Println(arr)
 	arrayExcise()
 	arrayMax()
+	reverseArray()
 }
 
 //for-range
@@ -95,4 +98,19 @@ func arrayMax() {
 		}
 	}
 	fmt.Println("max=", max, "下标为", index)
+}
+
+//随机生成数组元素并 反转打印数组
+func reverseArray() {
+	var arr [5]int
+	//注意在使用随机数生成时，要指定一个种子
+	rand.Seed(time.Now().Unix())
+	for i := 0; i < len(arr); i++ {
+		arr[i] = rand.Intn(100) //随机生成[0,100)的随机整数
+	}
+	fmt.Println("随机生成的数组为：", arr)
+	for i := len(arr) - 1; i >= 0; i-- {
+		fmt.Println(arr[i])
+
+	}
 }
