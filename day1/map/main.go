@@ -107,6 +107,6 @@ func structDemo() {
 	fmt.Println(student)
 }
 func excise2() {
-	var users = make(map[string]map[string]string)
+	//var users = make(map[string]map[string]string)
 
 }
