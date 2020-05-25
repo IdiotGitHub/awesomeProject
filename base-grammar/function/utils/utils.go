@@ -2,10 +2,11 @@ package utils
 
 import "fmt"
 
-var(
-	Age int
+var (
+	Age  int
 	Name string
 )
+
 func init() {
 	fmt.Println("utils->init()")
 	Age = 10

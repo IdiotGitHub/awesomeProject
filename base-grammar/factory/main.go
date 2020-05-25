@@ -1,7 +1,7 @@
 package main
 
 import "fmt"
-import "awesomeProject/day1/factory/modal"
+import "awesomeProject/base-grammar/factory/modal"
 
 /*
 工厂模式

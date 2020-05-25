@@ -1,7 +1,7 @@
 package main
 
 import (
-	"awesomeProject/day1/function/utils"
+	"awesomeProject/base-grammar/function/utils"
 	"fmt"
 	"strconv"
 	"strings"

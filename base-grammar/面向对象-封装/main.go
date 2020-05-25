@@ -1,7 +1,7 @@
 package main
 
 import (
-	"awesomeProject/day1/面向对象-封装/modal"
+	"awesomeProject/base-grammar/面向对象-封装/modal"
 	"fmt"
 )
 

@@ -49,6 +49,7 @@ func main() {
 	//convertStringToBasicType()
 	pointer()
 }
+
 //整型
 func intFunc() {
 	var i = 65535
@@ -62,11 +63,13 @@ func intFunc() {
 	fmt.Printf("char = %c\n", char)
 	fmt.Printf("char = %d\n", char+i)
 }
+
 //布尔类型
 func boolFunc() {
 	var b = true
 	fmt.Printf("i的数据类型是：%T,i所占用的字节大小为：%d\n", b, unsafe.Sizeof(b))
 }
+
 //字符串
 func stringFunc() {
 	//string的基本使用
@@ -81,6 +84,7 @@ func stringFunc() {
 		"hello" + "world"
 	fmt.Println(str2)
 }
+
 //基本数据类型的默认值
 func defaultValue() {
 	var num int
@@ -89,6 +93,7 @@ func defaultValue() {
 	var str string
 	fmt.Printf("num=%v,flo = %v,boo = %v, str = %v", num, flo, boo, str)
 }
+
 //数据类型转换
 func convertType() {
 	var num int = 100
@@ -96,6 +101,7 @@ func convertType() {
 	var flo float32 = float32(num)
 	fmt.Println(flo)
 }
+
 //基本数据类型和string类型之间的转换
 func convertBasicTypeToString() {
 	//1.使用fmt包中的Sprintf("%参数",表达式)
@@ -117,12 +123,12 @@ func ConvertStringToBasicType() {
 	var str1 string = "hello"
 	var boo bool
 	//这里肯定会转换失败，那么即使boo原来有值也会被赋值为默认值
-	boo, _= strconv.ParseBool(str1)
+	boo, _ = strconv.ParseBool(str1)
 	fmt.Println(boo)
 	var str2 = "123"
 	//这个地方不太好，在进行类型转换的时候如果不是要int64的话，还需要一个中间值来转，有点尬
 	var num1 int64
-	num1, _ = strconv.ParseInt(str2,10, 0)
+	num1, _ = strconv.ParseInt(str2, 10, 0)
 	fmt.Println(num1)
 	//float也一样
 }
@@ -140,8 +146,8 @@ func pointer() {
 	fmt.Println(ptr)
 	fmt.Println(*ptr)
 	//注意，值类型包括：基本数据类型int系列，float系列，bool、string、数组和结构体
-		//-->值类型一般在栈内分配内存
+	//-->值类型一般在栈内分配内存
 	//引用类型：指针、slice切片、map、管道chan、interface等
-		//-->引用类型一般在堆内分配内存
+	//-->引用类型一般在堆内分配内存
 
 }
