@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"sort"
+	"time"
+)
 
 /*
 接口
@@ -23,6 +28,21 @@ import "fmt"
 	8.一个接口可以继承多个接口，但是不允许继承有相同方法的接口
 	9.interface类型默认是一个指针类型，如果没有对interface初始化就是用，那么会输出nil
 	10.空接口interface{}，没有任何方法，所有所有类型都实现了空接口，因此可以把任何一个变量赋给一个空接口
+一个结构体只要实现了Less()、Swap()、Len()就可以使用Sort进行排序
+
+**实现接口与继承的对比
+	接口是对继承的一个补充
+	接口和继承解决的问题不同
+		1.继承的价值主要在解决代码的复用性和可维护性
+		2.接口的价值主要在于设计，设计好各种规范（方法），让其他自定义类型去实现这些方法。
+	接口比继承更加灵活，继承是满足is - a的关系，而接口只需满足like-a的关系
+	接口在一定程度上实现代码解耦
+多态
+	1.多态参数
+		在Usb接口案例中，既可以接收手机变量，又可以接收象即变量，就提想了Usb接口多态
+	2.多态数组
+类型断言
+	结构体中不可以直接使用类型强转，
 */
 func main() {
 	computer := Computer{}
@@ -46,6 +66,20 @@ func main() {
 	b.test1()
 	c.test2()
 	d.test1()
+	excise1()
+	//结构体切片排序
+	var heroes HeroSlice
+	rand.Seed(time.Now().UnixNano())
+	for i := 0; i < 10; i++ {
+		hero := Hero{
+			Name: fmt.Sprintf("英雄%d", rand.Intn(100)),
+			Age:  rand.Intn(100),
+		}
+		heroes = append(heroes, hero)
+	}
+	fmt.Println(heroes)
+	sort.Sort(heroes)
+	fmt.Println(heroes)
 }
 
 type Usb interface {
@@ -58,6 +92,14 @@ type Computer struct {
 //通过参数是接口进行传参，可以实现多态，这时候就必须传入一个实现了该接口的自定义变量（struct）
 func (c *Computer) Working(usb Usb) {
 	usb.Start()
+	//这个地方留下了一个问题，在Phone结构体实现所有的Usb接口方法的时候使用的是指针类型参数，那么这个位置的类型断言就必须是指针类型的，而且也都能正常执行，
+	//如果不使用指针类型，这个位置也可以使用指针类型断言，而且也是正常执行，
+	//如果不使用指针类，这个位置也不使用指针类型断言，就会发生断言失败
+	if phone, err := usb.(*Phone); err {
+		phone.Call()
+	} else {
+		fmt.Println("断言失败", err)
+	}
 	usb.Stop()
 }
 
@@ -69,6 +111,11 @@ func (p *Phone) Start() {
 }
 func (p *Phone) Stop() {
 	fmt.Println("Phone is stopped...")
+}
+
+//定义一个phone独有的方法Call()
+func (p *Phone) Call() {
+	fmt.Println("Phone can call a number")
 }
 
 type Camera struct {
@@ -118,4 +165,78 @@ func (a *A) test2() {
 }
 func (a *A) test3() {
 
+}
+
+//对结构体切片进行排序
+type Hero struct {
+	Name string
+	Age  int
+}
+
+type HeroSlice []Hero
+
+func (h HeroSlice) Len() int {
+	return len(h)
+}
+func (h HeroSlice) Less(i, j int) bool {
+	if h[i].Age < h[j].Age {
+		return true
+	} else {
+		return false
+	}
+}
+func (h HeroSlice) Swap(i, j int) {
+	temp := h[i]
+	h[i] = h[j]
+	h[j] = temp
+	//可以使用更简洁的方法
+	//h[i], h[j] = h[j], h[i]
+}
+
+//练习
+func excise1() {
+	var arr = []int{0, -1, 10, 7, 90}
+	//引用类型在传递的时候可以直接传名字就可以影响到原来的变量
+	sort.Ints(arr)
+	fmt.Println(arr)
+}
+
+//接口与继承的关系
+type Monkey struct {
+	Name string
+}
+
+func (m *Monkey) climbing() {
+	fmt.Println("猴子生来就会爬树")
+}
+
+type LittleMonkey struct {
+	Monkey
+}
+
+//如果想拓展这个结构体又不想破坏原来的结构，可以使用接口
+type Fish interface {
+	Swimming()
+}
+type Bird interface {
+	Flying()
+}
+
+func (l *LittleMonkey) Swimming() {
+	fmt.Println("猴子通过学习学会了游泳")
+}
+func (l *LittleMonkey) Flying() {
+	fmt.Println("猴子通过学习学会了飞翔")
+}
+func assertion() {
+	var a interface{}
+	b := Monkey{
+		"a",
+	}
+	a = b
+	var c Monkey
+	//不可以使用结构体直接强转，因此需要使用到类型断言
+	//c = Monkey(a)
+	c = a.(Monkey)
+	fmt.Println(c)
 }
