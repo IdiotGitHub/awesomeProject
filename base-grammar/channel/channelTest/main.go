@@ -12,10 +12,8 @@ func main() {
 	//开启一个匿名协程关闭resultChan
 	go func() {
 		for i := 0; i < 8; i++ {
-			v := <-exitChan
-			fmt.Println("exitChan-->", v)
+			<-exitChan
 		}
-		fmt.Println(len(resultChan))
 		close(resultChan)
 	}()
 	for {
@@ -37,24 +35,20 @@ var (
 )
 
 func putNum(numChan chan int) {
-	fmt.Println("putNum function start")
 
 	for i := 1; i <= 8000; i++ {
 		numChan <- i
 	}
-	fmt.Println("numChan length is ", len(numChan))
 	close(numChan)
-	fmt.Println("putNum function exit")
 }
 func operation(numChan chan int, resultChan chan int, exitChan chan bool) {
-	fmt.Println("operation function start")
 	for {
 		v, ok := <-numChan
 		if !ok {
 			break
 		}
 		flag := true
-		for i := 1; i <= v; i++ {
+		for i := 2; i < v; i++ {
 			if v%i == 0 {
 				flag = false
 				break
