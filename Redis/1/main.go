@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"github.com/garyburd/redigo/redis"
+)
+
 /*
 Redis
 	适合做缓存，也可以持久化，也成为数据结构数据库
@@ -54,6 +59,46 @@ Redis 五大数据类型：
 	5.查看当前数据库的key-value数量		dbsize
 	6.清空当前数据库的key-value和清空所有数据库的key-value	flushdb\flushall
 */
-func main() {
+var pool *redis.Pool
 
+func init() {
+	pool = &redis.Pool{
+		MaxIdle:     8,   //最大空闲连接数
+		MaxActive:   0,   //表示和数据库的最大连接数，0表示没有限制
+		IdleTimeout: 100, //最大空闲时间，单位秒
+		Dial: func() (redis.Conn, error) {
+			return redis.Dial("tcp", "localhost:6379")
+		},
+	}
+}
+func main() {
+	conn := pool.Get()
+	defer conn.Close()
+	_, err := conn.Do("set", "name", "大许")
+	if err != nil {
+		fmt.Println("写入数据错误", err)
+		return
+	}
+	//取出
+	s, err := redis.String(conn.Do("get", "name"))
+	if err != nil {
+		fmt.Println("get data error", err)
+		return
+	}
+	fmt.Println("redis get data name is ", s)
+	//要想从pool取出连接，要保证pool未关闭
+	pool.Close()
+	conn2 := pool.Get()
+	_, err = conn2.Do("set", "name2", "大许2")
+	if err != nil {
+		fmt.Println("写入数据错误", err)
+		return
+	}
+	//取出
+	s2, err := redis.String(conn.Do("get", "name2"))
+	if err != nil {
+		fmt.Println("get data error", err)
+		return
+	}
+	fmt.Println("redis get data name is ", s2)
 }
