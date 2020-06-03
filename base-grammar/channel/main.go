@@ -28,6 +28,24 @@ channel的遍历
 		2.在遍历时，如果channel已经关闭，则会正常遍历数据，遍历完后，正常退出
 如果一直往一个channel中写入数据，那么在达到channel容量上限的时候会发生deadlock错误，但是如果边写边读的话就会发生阻塞，（即使读慢写快，也不会发生deadlock，此时编译器会知道有读的协程，写慢读快同理）
 在使用管道的时候就是要有写有读，然后记得关就可以了
+使用细节
+	1.channel可以声明为只读或者只写（在默认情况下是双向的）
+		1.声明为只写	var chan1 chan<- int
+		1.声明为只读	var chan2 <-chan int
+		这种情况可以写在形参中，防止其他的误操作（在外部声明为双向的，在形参使用单向的）
+	2.使用select可以解决从管道取数据的阻塞问题
+		可以在for{}中使用select语句，当取不到数据的时候也不会发生传统方式中的fatal，而是跳到下一个case中，都取不到最后跳转至default
+	for {
+		select {
+			case v := <-channel1:
+				...
+			case v := <-channel2:
+				...
+			default :
+				return或者break或其他处理逻辑
+			}
+		}
+	3.如果在协程中发生了panic而没有进行捕获会导致整个程序崩溃，可以在可能发生panic的协程中使用defer-recover进行错误捕获，这样主线程和其他的协程就不会受到影响了
 */
 type Cat struct {
 	Name string
