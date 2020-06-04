@@ -9,8 +9,8 @@ import (
 )
 
 type Transmitter struct {
-	Conn net.Conn
-	//Bytes [8096]byte
+	Conn   net.Conn
+	Buffer [8096]byte
 }
 
 //将消息发送封装成函数
@@ -48,9 +48,9 @@ func (t *Transmitter) WritePkg(bytes []byte) (err error) {
 //将消息接收封装成函数
 func (t *Transmitter) ReadPkg() (mes message.Message, err error) {
 	//声明一个字符缓冲切片存放消息
-	var buffer = make([]byte, 8096)
+	//var buffer = make([]byte, 8096)
 	//接收客户端发送的数据
-	_, err = t.Conn.Read(buffer)
+	_, err = t.Conn.Read(t.Buffer[:4])
 
 	//返回EOF error是客户端关闭了连接
 	//问题，如果将两个err错误判断放在一起还是会出错，报错为<nil>，。。。。。
@@ -59,18 +59,18 @@ func (t *Transmitter) ReadPkg() (mes message.Message, err error) {
 		//fmt.Println("receive message length error ", err)
 		return
 	}
-	fmt.Println("received data length ", buffer[:4])
+	fmt.Println("received data length ", t.Buffer[:4])
 	//将消息长度转回uint32
-	pkgLen := binary.BigEndian.Uint32(buffer[:4])
-	//读消息
-	n, err := t.Conn.Read(buffer[:pkgLen])
+	pkgLen := binary.BigEndian.Uint32(t.Buffer[:4])
+	//读消息,某些情况下会一直在读不知道什么东西，导致阻塞在这
+	n, err := t.Conn.Read(t.Buffer[:pkgLen])
 	//这里的错误有可能是客户端关闭连接产生的io.EOF错误，先不做处理，
 	if n != int(pkgLen) || err != nil {
 		fmt.Println("read message error ", err)
 		return
 	}
 	//反序列化消息
-	err = json.Unmarshal(buffer[:pkgLen], &mes)
+	err = json.Unmarshal(t.Buffer[:pkgLen], &mes)
 	if err != nil {
 		fmt.Println("message unmarshal error ", err)
 		return

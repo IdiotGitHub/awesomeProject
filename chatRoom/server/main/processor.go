@@ -16,15 +16,15 @@ type Processor struct {
 
 //处理客户端连接
 func (p *Processor) Processor() {
+	transmitter := &utils.Transmitter{Conn: p.Conn}
 	for {
-		transmitter := &utils.Transmitter{Conn: p.Conn}
 		mes, err := transmitter.ReadPkg()
 		if err != nil {
 			if err == io.EOF {
 				fmt.Println("client closed connection ")
 				return
 			}
-			//fmt.Println("read message error ", err)
+			fmt.Println("read message error ", err)
 			return
 		}
 		fmt.Println("the client message is ", mes)

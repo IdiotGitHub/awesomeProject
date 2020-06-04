@@ -1,7 +1,7 @@
 package process
 
 import (
-	message "awesomeProject/chatRoom/server/model"
+	"awesomeProject/chatRoom/server/model"
 	"awesomeProject/chatRoom/server/utils"
 	"encoding/json"
 	"fmt"
@@ -14,16 +14,16 @@ type UserProcessor struct {
 }
 
 //编写单独的函数来处理不同的消息类型--处理登录请求
-func (u *UserProcessor) ServerLoginProcess(mes *message.Message) (err error) {
+func (u *UserProcessor) ServerLoginProcess(mes *model.Message) (err error) {
 	//反序列化mes.Data,获取客户端发送的数据，并验证登陆信息
-	var loginMes message.LoginMes
+	var loginMes model.LoginMes
 	err = json.Unmarshal([]byte(mes.Data), &loginMes)
 	if err != nil {
 		fmt.Println("unmarshal message error", err)
 		return
 	}
 	//声明服务器返回信息
-	var resultMes message.LoginResultMes
+	var resultMes model.LoginResultMes
 	//验证登录信息，目前没有链接数据库，先写死
 	if loginMes.UserId == "12345" && loginMes.UserPwd == "123" {
 		resultMes.Code = 200
@@ -39,8 +39,8 @@ func (u *UserProcessor) ServerLoginProcess(mes *message.Message) (err error) {
 		return
 	}
 	//声明新的message返回给客户端
-	var mesToClient = message.Message{
-		Type: message.LoginResultMesType,
+	var mesToClient = model.Message{
+		Type: model.LoginResultMesType,
 		Data: string(resultMesBytes),
 	}
 	mesToClientBytes, err := json.Marshal(mesToClient)
