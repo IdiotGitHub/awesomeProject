@@ -1,11 +1,29 @@
 package main
 
-import "fmt"
+import (
+	"awesomeProject/chatRoom/common/utils"
+	"fmt"
+)
 
 var userId string
 var userPwd string
+var userName string
 
 func main() {
+	//连接服务器
+	conn, err := utils.ConnectServer("tcp", ":8888")
+	if err != nil {
+		fmt.Println("connect server is error", err)
+		return
+	}
+	defer func() {
+		err := conn.Close()
+		if err != nil {
+			fmt.Println("connection close error", err)
+		} else {
+			fmt.Println("connection closed")
+		}
+	}()
 	var loop bool = true
 	var key int
 	for loop {
@@ -24,13 +42,16 @@ func main() {
 			fmt.Scanln(&userId)
 			fmt.Println("请输入密码：")
 			fmt.Scanln(&userPwd)
-			err := login(userId, userPwd)
+			fmt.Println("请输入用户名：")
+			fmt.Scanln(&userName)
+			err := login(conn, userId, userPwd, userName)
 			if err != nil {
 				fmt.Println("登陆失败")
+				fmt.Println(err)
 			} else {
 				fmt.Println("登陆成功")
 			}
-			loop = false
+			//loop = false
 		case 2:
 			fmt.Println("注册用户")
 			loop = false
