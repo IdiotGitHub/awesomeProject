@@ -57,7 +57,7 @@ func (t *Transmitter) ReadPkg() (mes message.Message, err error) {
 	//fmt.Println("received data length ", t.Buffer[:4])
 	//将消息长度转回uint32
 	pkgLen := binary.BigEndian.Uint32(t.Buffer[:4])
-	//读消息,某些情况下会一直在读不知道什么东西，导致阻塞在这--解决
+	//读消息,某些情况下会一直在读不知道什么东西，导致阻塞在这-- solved
 	n, err := t.Conn.Read(t.Buffer[:pkgLen])
 	//这里的错误有可能是客户端关闭连接产生的io.EOF错误，先不做处理，
 	if n != int(pkgLen) || err != nil {

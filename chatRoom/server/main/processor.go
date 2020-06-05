@@ -1,7 +1,6 @@
 package main
 
 import (
-	"awesomeProject/chatRoom/common/message"
 	"awesomeProject/chatRoom/server/model"
 	"awesomeProject/chatRoom/server/process"
 	"awesomeProject/chatRoom/server/utils"
@@ -41,7 +40,13 @@ func (p *Processor) ServerProcessMes(mes *model.Message) {
 		if err != nil {
 			fmt.Println("login process error ", err)
 		}
-	case message.RegisterMesType:
+	case model.RegisterMesType:
+		err := userProcessor.Register(mes)
+		if err != nil {
+			fmt.Println("register error ", err)
+		} else {
+			fmt.Println("register success")
+		}
 	default:
 		fmt.Println("messageType error ")
 
