@@ -27,20 +27,23 @@ func (p *Processor) Processor() {
 			return
 		}
 		fmt.Println("the client message is ", mes)
-		p.ServerProcessMes(&mes)
+		p.ServerProcessMes(mes)
 	}
 }
 
 //消息分类处理
 func (p *Processor) ServerProcessMes(mes *model.Message) {
-	userProcessor := &process.UserProcessor{Conn: p.Conn}
+	//should put this in case, if client comes else type,this will abuse memory
+	//userProcessor := &process.UserProcessor{Conn: p.Conn}
 	switch mes.Type {
 	case model.LoginMesType:
+		userProcessor := &process.UserProcessor{Conn: p.Conn}
 		err := userProcessor.ServerLoginProcess(mes)
 		if err != nil {
 			fmt.Println("login process error ", err)
 		}
 	case model.RegisterMesType:
+		userProcessor := &process.UserProcessor{Conn: p.Conn}
 		err := userProcessor.Register(mes)
 		if err != nil {
 			fmt.Println("register error ", err)

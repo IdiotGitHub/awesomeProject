@@ -12,11 +12,11 @@ import (
 */
 func ShowMenu() {
 	for {
-		fmt.Println("------------登陆成功-----------")
-		fmt.Println("------------1.显示在线用户列表")
-		fmt.Println("------------2.显示消息列表")
-		fmt.Println("------------3.退出系统")
-		fmt.Println("------------请选择(1-4)")
+		fmt.Println("------------login successfully-----------")
+		fmt.Println("1.show users who online")
+		fmt.Println("2.show message list")
+		fmt.Println("3.exit")
+		fmt.Println("make your choice(1-4)")
 		var key int
 		_, err := fmt.Scanf("%d\n", &key)
 		if err != nil {

@@ -49,3 +49,5 @@ func (u *UserDao) GetUserById(userId string) (user User, err error) {
 	}
 	return
 }
+
+//add register logical

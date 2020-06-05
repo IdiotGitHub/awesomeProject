@@ -69,6 +69,7 @@ func (u *UserProcessor) ServerLoginProcess(mes *model.Message) (err error) {
 	return
 }
 
+//the deeper operation with redis in UserDao is better
 //deal with register
 func (u *UserProcessor) Register(mes *model.Message) (err error) {
 	var registerResultMes model.RegisterResultMes

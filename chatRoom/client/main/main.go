@@ -31,10 +31,10 @@ func main() {
 	var key int
 	for loop {
 		fmt.Println("----------------welcome to chat room-----------------")
-		fmt.Println("\t\t\t 1 login")
-		fmt.Println("\t\t\t 2 register")
-		fmt.Println("\t\t\t 3 exit")
-		fmt.Println("\t\t\t make your choice(1-3)")
+		fmt.Println("\t 1 login")
+		fmt.Println("\t 2 register")
+		fmt.Println("\t 3 exit")
+		fmt.Println("\t make your choice(1-3)")
 		_, err := fmt.Scanln(&key)
 		if err != nil {
 			fmt.Println("wrong entity", err)

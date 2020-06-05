@@ -41,7 +41,7 @@ func (t *Transmitter) WritePkg(bytes []byte) (err error) {
 }
 
 //将消息接收封装成函数
-func (t *Transmitter) ReadPkg() (mes message.Message, err error) {
+func (t *Transmitter) ReadPkg() (mes *message.Message, err error) {
 	//声明一个字符缓冲切片存放消息
 	//var buffer = make([]byte, 8096)
 	//接收客户端发送的数据
