@@ -62,6 +62,14 @@ func (u *UserProcess) Login(userId, userPwd string) error {
 	}
 	if loginResultMes.Code == 200 {
 		//处理登录成功
+		fmt.Println("login success")
+		fmt.Println("online users:")
+		for _, v := range loginResultMes.UsersId {
+			if v == userId {
+				continue
+			}
+			fmt.Println("user :\t", v)
+		}
 		return nil
 	} else {
 		//fmt.Println(loginResultMes.Error)

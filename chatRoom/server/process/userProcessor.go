@@ -11,7 +11,8 @@ import (
 
 //使用结构体存储公共字段
 type UserProcessor struct {
-	Conn net.Conn
+	Conn   net.Conn
+	UserId string
 }
 
 //编写单独的函数来处理不同的消息类型--处理登录请求
@@ -39,6 +40,12 @@ func (u *UserProcessor) ServerLoginProcess(mes *model.Message) (err error) {
 
 	} else if loginMes.UserPwd == user.UserPwd {
 		resultMes.Code = 200
+		//add userId info to users
+		u.UserId = loginMes.UserId
+		userManager.AddOnlineUser(u)
+		for key, _ := range userManager.onlineUser {
+			resultMes.UsersId = append(resultMes.UsersId, key)
+		}
 	}
 	//将验证结果返回客户端
 	//序列化验证结果,不能直接将resultMes返回给客户端，要规范起来，将resultMes封装到Message中返回

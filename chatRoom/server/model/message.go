@@ -11,14 +11,15 @@ type Message struct {
 }
 
 type LoginMes struct {
-	UserId   string `json:"user_id"`
-	UserPwd  string `json:"user_pwd"`
-	UserName string `json:"user_name"`
+	UserId  string `json:"user_id"`
+	UserPwd string `json:"user_pwd"`
+	//UserName string `json:"user_name"`
 }
 
 type LoginResultMes struct {
-	Code  int    `json:"code"`  //登录状态码 500未注册  200登录成功
-	Error string `json:"error"` //错误内容，
+	Code    int      `json:"code"`     //登录状态码 500未注册  200登录成功
+	UsersId []string `json:"users_id"` //save userId info return to client
+	Error   string   `json:"error"`    //错误内容，
 }
 type RegisterMes struct {
 	UserId   string `json:"user_id"`

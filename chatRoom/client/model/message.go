@@ -17,8 +17,9 @@ type LoginMes struct {
 }
 
 type LoginResultMes struct {
-	Code  int    `json:"code"`  //登录状态码 500未注册  200登录成功
-	Error string `json:"error"` //错误内容，
+	Code    int      `json:"code"` //登录状态码 500未注册  200登录成功
+	UsersId []string `json:"users_id"`
+	Error   string   `json:"error"` //错误内容，
 }
 type RegisterMes struct {
 	UserId   string `json:"user_id"`

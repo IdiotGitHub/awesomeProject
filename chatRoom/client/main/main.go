@@ -49,9 +49,8 @@ func main() {
 			if err != nil {
 				fmt.Println(err)
 			} else {
-				process.ShowMenu()
 				process.ReadServerMes(conn)
-				fmt.Println("login success")
+				process.ShowMenu()
 			}
 			//loop = false
 		case 2:
